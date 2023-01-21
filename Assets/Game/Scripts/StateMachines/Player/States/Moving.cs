@@ -17,7 +17,6 @@ namespace Game.Scripts.StateMachines.Player.States
         public override void Start()
         {
             base.Start();
-            Debug.Log("Start");
             if (StateMachine.Owner != null)
             {
                 rigidbody = ((Scripts.Player)StateMachine.Owner).Rigidbody;

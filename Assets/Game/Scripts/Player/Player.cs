@@ -1,21 +1,26 @@
 using System;
 using System.Collections.Generic;
+using Game.Scripts.StateMachines;
 using Game.Scripts.StateMachines.Player;
+using Game.Scripts.StateMachines.Player.States;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 namespace Game.Scripts
 {
-    [RequireComponent(typeof(Animator),typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Animator), typeof(Rigidbody2D))]
     public class Player : MonoBehaviour
     {
         public float speed;
+        public float interactRadius;
+        public LayerMask interactLayer;
 
         [SerializeField]
         private LayerMask groundLayer;
-        
+
         private MovementStateMachine movementStateMachine;
+        private InteractionStateMachine interactionStateMachine;
 
         public Rigidbody2D Rigidbody { get; set; }
         public Animator Animator { get; set; }
@@ -28,6 +33,16 @@ namespace Game.Scripts
             if (hit.TryGetComponent(out Tilemap tilemap)) return tilemap;
             return null;
         }
+        
+        public void SetMovementState(string state)
+        {
+            movementStateMachine.ChangeState(state);
+        }
+
+        public void SetInteractionState(string state)
+        {
+            interactionStateMachine.ChangeState(state);
+        }
 
 
         private void Awake()
@@ -36,8 +51,11 @@ namespace Game.Scripts
             Animator = GetComponent<Animator>();
             SpriteRenderer = GetComponent<SpriteRenderer>();
             AudioSource = GetComponent<AudioSource>();
+            
             movementStateMachine = gameObject.AddComponent<MovementStateMachine>();
+            interactionStateMachine = gameObject.AddComponent<InteractionStateMachine>();
             movementStateMachine.Owner = this;
+            interactionStateMachine.Owner = this;
         }
         
         

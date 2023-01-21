@@ -9,6 +9,8 @@ namespace Game.Scripts.StateMachines.Player
     {
         public Idle Idle { get; set; }
         public Moving Moving { get; set; }
+        public Locked Locked { get; set; }
+
         protected override State GetInitialState()
         {
             return Idle;
@@ -18,6 +20,7 @@ namespace Game.Scripts.StateMachines.Player
         {
             Moving = AddState<Moving>(this);
             Idle = AddState<Idle>(this);
+            Locked = AddState<Locked>(this);
         }
 
         public override void Start()

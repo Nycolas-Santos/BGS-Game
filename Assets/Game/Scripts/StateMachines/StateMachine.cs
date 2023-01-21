@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Game.Scripts.StateMachines
@@ -39,7 +41,7 @@ namespace Game.Scripts.StateMachines
             if (CurrentState != null) CurrentState.LateUpdate();
         }
         /// <summary>
-        /// Changes the current state of the state machine.
+        /// Changes the current state of the state machine by direct reference
         /// </summary>
         /// <param name="state"></param>
         public void ChangeState(State state)
@@ -48,6 +50,17 @@ namespace Game.Scripts.StateMachines
             CurrentState = state;
             CurrentState.Enter();
         }
+        /// <summary>
+        /// Changes the current state of the state machine by string reflection
+        /// </summary>
+        /// <param name="state"></param>
+        public void ChangeState(string state)
+        {
+            CurrentState.Exit();
+            CurrentState = (State)this.GetType().GetProperty(state)?.GetValue(this);
+            CurrentState.Enter();
+        }
+        
         /// <summary>
         /// Returns the initial state of this state machine, this method must be overridden on all state machines.
         /// </summary>
