@@ -57,9 +57,11 @@ namespace Game.Scripts
             movementStateMachine.Owner = this;
             interactionStateMachine.Owner = this;
         }
-        
-        
 
+        private void Start()
+        {
+            GameManager.Instance.Player = this;
+        }
         public void Footstep()
         {
             var tilemap = GetCurrentGroundTilemap();

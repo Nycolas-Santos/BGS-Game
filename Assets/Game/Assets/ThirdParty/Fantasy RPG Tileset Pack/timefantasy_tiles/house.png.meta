@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -22716,12 +22716,12 @@ TextureImporter:
       house_953: -738892809
       house_737: 1133570810
       house_1050: 1316891228
-      house_559: -1277411666
       house_761: -1011719009
+      house_1015: -36235956
       house_895: 375667901
       house_377: 1083507024
       house_519: -1317470089
-      house_1015: -36235956
+      house_559: -1277411666
       house_101: -1457912178
       house_857: -1227771463
       house_1021: -1083211754

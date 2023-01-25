@@ -22,7 +22,11 @@ namespace Game.Scripts.StateMachines
         // Calls for the State instance Start Method
         public virtual void Start()
         {
-            CurrentState = GetInitialState();
+            if (GetInitialState() != null)
+            {
+                CurrentState = GetInitialState();
+                ChangeState(CurrentState);
+            }
         }
 
         // Calls for the State instance Update Method

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303ac167f8592af49a71ac285f99c9d3, type: 3}
+  m_Name: WoodTileData
+  m_EditorClassIdentifier: 
+  tiles:
+  - {fileID: 11400000, guid: d4c7bbbbf9737944997b5b73e3423f12, type: 2}
+  - {fileID: 11400000, guid: 5b128565cafdc9c4092bacc28aa704f0, type: 2}
+  - {fileID: 11400000, guid: 4f53c929091302947bf1dad05bb1a675, type: 2}
+  - {fileID: 11400000, guid: f4a422e5977723c4cbcd42e154afbc85, type: 2}
+  - {fileID: 11400000, guid: 258f9feefe2a3654fbfa38b7a3d2eba6, type: 2}
+  - {fileID: 11400000, guid: 1c8cac54f042b9442be16387615d5abd, type: 2}
+  - {fileID: 11400000, guid: 737be5a7e1f1b9042bbd89c89ecbb7a3, type: 2}
+  footstepSound:
+  - {fileID: 8300000, guid: 692e56355f8f1d245ac63f1143357113, type: 3}
+  - {fileID: 8300000, guid: 3a452d6e4f1cef44ca1cd446962cdbad, type: 3}
+  - {fileID: 8300000, guid: efb47c88a0de24f49b8566c347ebd7f7, type: 3}
+  - {fileID: 8300000, guid: 0db94530d467f8d478dd43b7d0dbe3f2, type: 3}
+  - {fileID: 8300000, guid: 527b11a6de6e9ac4082332af55aa3234, type: 3}
