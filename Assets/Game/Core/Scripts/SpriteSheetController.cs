@@ -26,6 +26,7 @@ public class SpriteSheetController : MonoBehaviour
         }
 
         _spriteLayers = GetComponentsInChildren<SpriteLayer>();
+        ChangeSpriteIndex(0);
     }
 
     // Function to change the sprite array
