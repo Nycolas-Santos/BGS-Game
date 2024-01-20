@@ -7,30 +7,39 @@ namespace Game.Core.Scripts
     public enum PlayerState
     {
         Idle,
-        Moving
+        Moving,
+        Interacting
     }
 
     [RequireComponent(typeof(SpriteSheetController))]
     public class Player : MonoBehaviour
     {
         public float moveSpeed = 5f; // Adjust the speed as needed
+        
         private Rigidbody2D _rigidBody2d;
         private PlayerState _currentState = PlayerState.Idle;
         private Animator _animator;
         private float _horizontalInput;
         private float _verticalInput;
+        private bool _interact;
+        private CircleCollider2D interactionRadius;
+        private IInteractable _focusingInteractable;
 
         private static readonly int HorizontalInput = Animator.StringToHash("HorizontalInput");
         private static readonly int VerticalInput = Animator.StringToHash("VerticalInput");
 
         private const string HORIZONTAL_AXIS = "Horizontal";
         private const string VERTICAL_AXIS = "Vertical";
+        private const float STOP_PLAYER_LERP_SPEED = 10f;
+        private const float STOP_PLAYER_LERP_TIME = 1f;
+        private const float MOVEMENT_TOLERANCE = 0.01f;
         private const float INPUT_THRESHOLD = 0f;
 
         void Start()
         {
             if (_rigidBody2d == null)_rigidBody2d = GetComponent<Rigidbody2D>();
             if (_animator == null) _animator = GetComponent<Animator>();
+            if (interactionRadius == null) interactionRadius = GetComponent<CircleCollider2D>();
         }
 
         void Update()
@@ -42,8 +51,16 @@ namespace Game.Core.Scripts
 
         private void UpdateAnimation()
         {
-            _animator.SetFloat(HorizontalInput, _horizontalInput);
-            _animator.SetFloat(VerticalInput,_verticalInput);
+            if (IsPlayerMoving())_animator.SetFloat(HorizontalInput, _horizontalInput);
+            else
+            {
+                _animator.SetFloat(HorizontalInput, Mathf.Lerp(_animator.GetFloat(HorizontalInput), 0f, STOP_PLAYER_LERP_TIME));
+            }
+            if (IsPlayerMoving())_animator.SetFloat(VerticalInput,_verticalInput);
+            else
+            {
+                _animator.SetFloat(VerticalInput, Mathf.Lerp(_animator.GetFloat(VerticalInput), 0f, STOP_PLAYER_LERP_TIME));
+            }
         }
 
         void UpdatePlayerState()
@@ -51,19 +68,28 @@ namespace Game.Core.Scripts
             switch (_currentState)
             {
                 case PlayerState.Idle:
-
                     break;
                 case PlayerState.Moving:
                     MovePlayer();
                     break;
+                case PlayerState.Interacting:
+                    _rigidBody2d.velocity = Vector2.Lerp(_rigidBody2d.velocity, Vector2.zero, STOP_PLAYER_LERP_SPEED * Time.deltaTime);
+                    break;
             }
         }
 
-        void HandleInput()
+        private void HandleInput()
         {
             _horizontalInput = Input.GetAxis(HORIZONTAL_AXIS);
             _verticalInput = Input.GetAxis(VERTICAL_AXIS);
 
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (_focusingInteractable != null) _focusingInteractable.Interact();
+            }
+            
+            if (_currentState == PlayerState.Interacting) return;
+            
             if (Mathf.Approximately(_horizontalInput, INPUT_THRESHOLD) && Mathf.Approximately(_verticalInput, INPUT_THRESHOLD))
             {
                 SetState(PlayerState.Idle);
@@ -74,7 +100,7 @@ namespace Game.Core.Scripts
             }
         }
 
-        void SetState(PlayerState newState)
+        public void SetState(PlayerState newState)
         {
             if (_currentState == newState)
                 return;
@@ -91,6 +117,44 @@ namespace Game.Core.Scripts
             _rigidBody2d.velocity = movement * moveSpeed;
 
             movement.Normalize();
+        }
+        
+        // Called when another collider enters the trigger area
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            // Check if the entered object has an IInteractable component
+            IInteractable interactable = other.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                // Call the Interact method on the interactable object
+                interactable.CanInteract(true);
+                _focusingInteractable = interactable;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            // Check if the exit object has an IInteractable component
+            IInteractable interactable = other.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                // Call the Interact method on the interactable object
+                interactable.CanInteract(false);
+                if (_focusingInteractable == interactable) _focusingInteractable = null;
+            }
+        }
+        
+        bool IsPlayerMoving()
+        {
+            if (_rigidBody2d != null)
+            {
+                // Check if the magnitude of the velocity is greater than the tolerance
+                return _rigidBody2d.velocity.magnitude > MOVEMENT_TOLERANCE;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
