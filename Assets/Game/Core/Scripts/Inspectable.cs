@@ -10,6 +10,8 @@ public class Inspectable : MonoBehaviour, IInteractable
     [SerializeField] private float inspectableTextTime;
 
     private const float HEIGHT_ABOVE_INTERACTABLE = 1f;
+    private const string STARTING_INTERACTION_LOG = "Start Interaction";
+    private const string FINISH_INTERACTION_LOG = "Finished Interaction";
     
     public void Interact()
     {
@@ -20,29 +22,41 @@ public class Inspectable : MonoBehaviour, IInteractable
 
     public void StartInteraction()
     {
-        Debug.Log("Start Interaction");
+        Debug.Log(STARTING_INTERACTION_LOG);
         GameManager.Instance.PlayerInstance.SetState(PlayerState.Interacting);
+        DestroyInteractionPrompt();
     }
 
     public void FinishInteraction()
     {
-        Debug.Log("Finished Interaction");
+        Debug.Log(FINISH_INTERACTION_LOG);
         GameManager.Instance.PlayerInstance.SetState(PlayerState.Idle);
         UserInterfaceManager.Instance.SubtitlesController.OnStartSubtitleLine -= StartInteraction;
         UserInterfaceManager.Instance.SubtitlesController.OnFinishSubtitleLine -= FinishInteraction;
+        CreateInteractionPrompt();
     }
 
     public void CanInteract(bool value)
     {
         if (value)
         {
-            interactPrompt = Instantiate(UserInterfaceManager.Instance.UserInterfaceData.DefaultInteractUI);
-            interactPrompt.transform.position = transform.position + new Vector3(0,HEIGHT_ABOVE_INTERACTABLE, 0);
-            interactPrompt.GetComponent<InteractPrompt>().InteractionType = InteractionType.Question;
+            CreateInteractionPrompt();
         }
         else
         {
-            if (interactPrompt != null) Destroy(interactPrompt);
+            DestroyInteractionPrompt();
         }
+    }
+
+    private void CreateInteractionPrompt()
+    {
+        interactPrompt = Instantiate(UserInterfaceManager.Instance.UserInterfaceData.DefaultInteractUI);
+        interactPrompt.transform.position = transform.position + new Vector3(0,HEIGHT_ABOVE_INTERACTABLE, 0);
+        interactPrompt.GetComponent<InteractPrompt>().InteractionType = InteractionType.Question;
+    }
+
+    private void DestroyInteractionPrompt()
+    {
+        if (interactPrompt != null) Destroy(interactPrompt);
     }
 }

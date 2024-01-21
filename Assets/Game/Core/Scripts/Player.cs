@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Game.Core.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Game.Core.Scripts
@@ -15,15 +17,19 @@ namespace Game.Core.Scripts
     public class Player : MonoBehaviour
     {
         public float moveSpeed = 5f; // Adjust the speed as needed
-        
+        public Item equippedHead;
+        public Item equippedClothes;
+        public List<GameObject> _interactables;
+        public Inventory Inventory { get; set; }
+
         private Rigidbody2D _rigidBody2d;
         private PlayerState _currentState = PlayerState.Idle;
         private Animator _animator;
         private float _horizontalInput;
         private float _verticalInput;
         private bool _interact;
-        private CircleCollider2D interactionRadius;
-        private IInteractable _focusingInteractable;
+        private CircleCollider2D _interactionRadius;
+        private SpriteSheetController _spriteSheetController;
 
         private static readonly int HorizontalInput = Animator.StringToHash("HorizontalInput");
         private static readonly int VerticalInput = Animator.StringToHash("VerticalInput");
@@ -34,12 +40,37 @@ namespace Game.Core.Scripts
         private const float STOP_PLAYER_LERP_TIME = 1f;
         private const float MOVEMENT_TOLERANCE = 0.01f;
         private const float INPUT_THRESHOLD = 0f;
+        private const int CLOTHES_SPRITE_LAYER_INDEX = 1;
+        private const int HEAD_SPRITE_LAYER_INDEX = 2;
+
+        public bool IsItemEquipped(Item item)
+        {
+            return item == equippedClothes || item == equippedHead;
+        }
+
+        private void Awake()
+        {
+            if (Inventory == null) Inventory = GetComponent<Inventory>();
+        }
 
         void Start()
         {
             if (_rigidBody2d == null)_rigidBody2d = GetComponent<Rigidbody2D>();
             if (_animator == null) _animator = GetComponent<Animator>();
-            if (interactionRadius == null) interactionRadius = GetComponent<CircleCollider2D>();
+            if (_interactionRadius == null) _interactionRadius = GetComponent<CircleCollider2D>();
+            if (_spriteSheetController == null) _spriteSheetController = GetComponent<SpriteSheetController>();
+        }
+
+        private void OnEnable()
+        {
+            Inventory.OnAddItem += AssignItemToSlot;
+            Inventory.OnRemoveItem += UnassignItemToSlot;
+        }
+
+        private void OnDisable()
+        {
+            Inventory.OnAddItem -= AssignItemToSlot;
+            Inventory.OnRemoveItem -= UnassignItemToSlot;
         }
 
         void Update()
@@ -85,7 +116,7 @@ namespace Game.Core.Scripts
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (_focusingInteractable != null) _focusingInteractable.Interact();
+                if (_currentState != PlayerState.Interacting) TryInteract();
             }
             
             if (_currentState == PlayerState.Interacting) return;
@@ -97,6 +128,17 @@ namespace Game.Core.Scripts
             else
             {
                 SetState(PlayerState.Moving);
+            }
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                if (UserInterfaceManager.Instance.IsInventoryOpen())
+                {
+                    UserInterfaceManager.Instance.CloseInventory();
+                }
+                else
+                {
+                    UserInterfaceManager.Instance.OpenInventory();
+                }
             }
         }
 
@@ -128,7 +170,7 @@ namespace Game.Core.Scripts
             {
                 // Call the Interact method on the interactable object
                 interactable.CanInteract(true);
-                _focusingInteractable = interactable;
+                if (!_interactables.Contains(interactable.gameObject))_interactables.Add(interactable.gameObject);
             }
         }
 
@@ -140,8 +182,18 @@ namespace Game.Core.Scripts
             {
                 // Call the Interact method on the interactable object
                 interactable.CanInteract(false);
-                if (_focusingInteractable == interactable) _focusingInteractable = null;
+                if (_interactables.Contains(interactable.gameObject))_interactables.Remove(interactable.gameObject);
             }
+        }
+
+        private void AssignItemToSlot(Item item)
+        {
+            UserInterfaceManager.Instance.InventoryController.TryAddItemToSlot(item);
+        }
+
+        private void UnassignItemToSlot(Item item)
+        {
+            UserInterfaceManager.Instance.InventoryController.RemoveItemFromSlot(item);
         }
         
         bool IsPlayerMoving()
@@ -155,6 +207,74 @@ namespace Game.Core.Scripts
             {
                 return false;
             }
+        }
+
+        private void TryInteract()
+        {
+            GameObject closest = null;
+            float closestDistance = float.MaxValue;
+            Vector3 playerPosition = transform.position;
+
+            foreach (GameObject interactable in _interactables)
+            {
+                float distance = Vector3.Distance(playerPosition, interactable.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closest = interactable.gameObject;
+                }
+            }
+            if (closest != null) closest.GetComponent<IInteractable>().Interact();
+
+        }
+
+        public void UnequipItem(Item item)
+        {
+            switch (item.ItemType)
+            {
+                case ItemType.Clothes:
+                    EquipClothes(null);
+                    break;
+                case ItemType.Head:
+                    EquipHead(null);
+                    break;
+                case ItemType.Weapon:
+                    break;
+                case ItemType.Consumable:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        public void EquipClothes(Item clothes)
+        {
+            if (clothes == null)
+            {
+                equippedClothes = null;
+                _spriteSheetController.ChangeSpriteData(null,CLOTHES_SPRITE_LAYER_INDEX);
+            }
+            else
+            {
+                _spriteSheetController.ChangeSpriteData(clothes.SpriteData,CLOTHES_SPRITE_LAYER_INDEX);
+            }
+            
+        }
+        
+
+        public void EquipHead(Item head)
+        {
+            if (head == null)
+            {
+                equippedHead = null;
+                _spriteSheetController.ChangeSpriteData(null,HEAD_SPRITE_LAYER_INDEX);
+            }
+            else
+            {
+                _spriteSheetController.ChangeSpriteData(head.SpriteData,HEAD_SPRITE_LAYER_INDEX);
+            }
+            
         }
     }
 }

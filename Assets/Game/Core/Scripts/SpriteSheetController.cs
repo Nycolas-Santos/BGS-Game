@@ -30,24 +30,38 @@ public class SpriteSheetController : MonoBehaviour
     }
 
     // Function to change the sprite array
-    public void ChangeSpriteData(SpriteData newSpriteData)
+    public void ChangeSpriteData(SpriteData newSpriteData, int layer)
     {
-        if (spriteRenderer != null)
+        if (layer == 0) // CHANGE THE DEFAULT SPRITE DATA
         {
-            spriteData = newSpriteData;
-            // Set the initial sprite from the new array (you can modify this as needed)
-            if (spriteData.spriteArray.Length > SPRITE_ARRAY_THRESHOLD)
+            if (spriteRenderer != null)
             {
-                spriteRenderer.sprite = spriteData.spriteArray[0];
+                if (newSpriteData == null)
+                {
+                    spriteData = null;
+                    spriteRenderer.sprite = null;
+                    return;
+                }
+                spriteData = newSpriteData;
+                // Set the initial sprite from the new array (you can modify this as needed)
+                if (spriteData.spriteArray.Length > SPRITE_ARRAY_THRESHOLD)
+                {
+                    spriteRenderer.sprite = spriteData.spriteArray[0];
+                }
+                else
+                {
+                    Debug.LogWarning(NO_SPRITE_ARRAY);
+                }
             }
             else
             {
-                Debug.LogWarning(NO_SPRITE_ARRAY);
+                Debug.LogError(NO_SPRITE_RENDERERER_ERROR);
             }
         }
-        else
+        else // CHANGE SOME LAYER SPRITE DATA AS HEAD OR CLOTHES
         {
-            Debug.LogError(NO_SPRITE_RENDERERER_ERROR);
+            int correctedLayer = layer - 1; // THIS SUBTRACTION HAS TO BE DONE BECAUSE ARRAYS STARTS AT 0
+            _spriteLayers[correctedLayer].SetSpriteLayer(newSpriteData);
         }
     }
     

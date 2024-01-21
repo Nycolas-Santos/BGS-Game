@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c204c6dbbfe694da72b33e358ff22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteData: {fileID: 11400000, guid: b823c990e5431374b974481bb254c49b, type: 2}
+  spriteData: {fileID: 0}
   _spriteRenderer: {fileID: 0}
 --- !u!1 &1745331710
 GameObject:
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25c204c6dbbfe694da72b33e358ff22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteData: {fileID: 11400000, guid: 6c5629c4e7321d04593932ef02a03d12, type: 2}
+  spriteData: {fileID: 0}
   _spriteRenderer: {fileID: 0}
 --- !u!1 &5744238331818820776
 GameObject:
@@ -213,6 +213,7 @@ GameObject:
   - component: {fileID: 4063343501794303787}
   - component: {fileID: 1705400127}
   - component: {fileID: 3813503625068013904}
+  - component: {fileID: 576883442}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -250,6 +251,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  equippedHead: {fileID: 0}
+  equippedClothes: {fileID: 0}
+  _interactables: []
 --- !u!50 &51772169
 Rigidbody2D:
   serializedVersion: 4
@@ -373,3 +377,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 1.6
+--- !u!114 &576883442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5744238331818820776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 214f8a14efc49d940b9b2926e8411a0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  startingCoins: 100
+  startingItems:
+  - {fileID: 11400000, guid: a4732ed1bb5f99a459ccd55616d0aebe, type: 2}
+  capacity: 14

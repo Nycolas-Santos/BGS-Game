@@ -18,12 +18,19 @@ public class SpriteLayer : MonoBehaviour
 
     public void SetSpriteLayer(SpriteData newSpriteData)
     {
+        if (newSpriteData == null)
+        {
+            spriteData = null;
+            _spriteRenderer.sprite = null;
+            return;
+        }
         spriteData = newSpriteData;
         _spriteRenderer.sprite = spriteData.spriteArray[0];
     }
 
     public void SetSpriteLayerIndex(int index)
     {
+        if (spriteData == null) return;
         if (spriteData.spriteArray.Length > SPRITE_ARRAY_THRESHOLD)
         {
             _spriteRenderer.sprite = spriteData.spriteArray[index];

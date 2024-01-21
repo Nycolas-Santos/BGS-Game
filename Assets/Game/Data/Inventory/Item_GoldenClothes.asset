@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a9bf418cd33f34290488192eebad9e, type: 3}
+  m_Name: Item_GoldenClothes
+  m_EditorClassIdentifier: 
+  itemName: Golden Clothes
+  icon: {fileID: 21300000, guid: 4c0e16ad0b329744da6a1694101561c1, type: 3}
+  quantity: 1
+  ItemType: 0
+  SpriteData: {fileID: 11400000, guid: 6c5629c4e7321d04593932ef02a03d12, type: 2}
+  price: 50
