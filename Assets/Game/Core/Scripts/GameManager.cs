@@ -10,12 +10,19 @@ using UnityEngine.Serialization;
 public class GameManager : Singleton<GameManager>
 {
     public Player PlayerInstance { get; set; }
-
+    
     public GameSettings gameSettings;
 
+    private const string STARTING_SCENE = "Shop";
+    
     private void OnEnable()
     {
         PlayerInstance = FindObjectOfType<Player>();
+    }
+
+    private void Start()
+    {
+        SceneManager.LoadScene(STARTING_SCENE, LoadSceneMode.Additive);
     }
 
 
