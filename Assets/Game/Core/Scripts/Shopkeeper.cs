@@ -13,6 +13,8 @@ public class Shopkeeper : MonoBehaviour, IInteractable
     
     public void Interact()
     {
+        UserInterfaceManager.OnOpenShop += StartInteraction;
+        UserInterfaceManager.OnCloseShop += FinishInteraction;
         UserInterfaceManager.Instance.OpenShop();
         UserInterfaceManager.Instance.OpenInventory();
     }
@@ -21,7 +23,7 @@ public class Shopkeeper : MonoBehaviour, IInteractable
     {
         Debug.Log(STARTING_INTERACTION_LOG);
         GameManager.Instance.PlayerInstance.SetState(PlayerState.Interacting);
-        ShopController.OnCloseShop += FinishInteraction;
+        SoundManager.Instance.PlaySFXSound(SoundManager.Instance.audioSettings.sfxOpenShop,false);
         DestroyInteractionPrompt();
     }
 
@@ -29,7 +31,9 @@ public class Shopkeeper : MonoBehaviour, IInteractable
     {
         Debug.Log(FINISH_INTERACTION_LOG);
         GameManager.Instance.PlayerInstance.SetState(PlayerState.Idle);
-        ShopController.OnCloseShop -= FinishInteraction;
+        SoundManager.Instance.PlaySFXSound(SoundManager.Instance.audioSettings.sfxCloseShop,false);
+        UserInterfaceManager.OnOpenShop -= StartInteraction;
+        UserInterfaceManager.OnCloseShop -= FinishInteraction;
         CreateInteractionPrompt();
     }
 
@@ -47,6 +51,7 @@ public class Shopkeeper : MonoBehaviour, IInteractable
 
     private void CreateInteractionPrompt()
     {
+        if (interactPrompt != null) Destroy(interactPrompt);
         interactPrompt = Instantiate(UserInterfaceManager.Instance.UserInterfaceData.DefaultInteractUI);
         interactPrompt.transform.position = transform.position + new Vector3(0,HEIGHT_ABOVE_INTERACTABLE, 0);
         interactPrompt.GetComponent<InteractPrompt>().InteractionType = InteractionType.Shop;

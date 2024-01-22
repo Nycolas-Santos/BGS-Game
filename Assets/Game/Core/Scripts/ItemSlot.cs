@@ -63,6 +63,7 @@ namespace Game.Core.Scripts
                 canvasGroup.blocksRaycasts = false; // Disable raycasts on the item slot while dragging
                 itemImageIcon.transform.SetParent(transform.parent.parent);
                 itemImageIcon.transform.SetAsLastSibling();
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiBeginDrag);
             }
         }
 
@@ -92,6 +93,7 @@ namespace Game.Core.Scripts
             itemImageIcon.rectTransform.anchoredPosition = Vector2.zero;
             // Check if the pointer is over a valid drop target (another item slot)
             GameObject dropTarget = eventData.pointerEnter;
+            SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiEndDrag);
 
             if (dropTarget != null && dropTarget.GetComponent<ItemSlot>() != null)
             {
@@ -150,6 +152,7 @@ namespace Game.Core.Scripts
             {
                 GameManager.Instance.PlayerInstance.Inventory.AddCoin(Mathf.RoundToInt(item.price*GameManager.Instance.gameSettings.SellingItemMultiplier));
                 GameManager.Instance.PlayerInstance.UnequipItem(item);
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiSellSound);
                 OnUnequipItem.Invoke();
                 Debug.Log(DEBUG_UNEQUIP_LOG);
 

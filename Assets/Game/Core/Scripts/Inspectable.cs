@@ -24,6 +24,7 @@ public class Inspectable : MonoBehaviour, IInteractable
     {
         Debug.Log(STARTING_INTERACTION_LOG);
         GameManager.Instance.PlayerInstance.SetState(PlayerState.Interacting);
+        SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiInspectSound);
         DestroyInteractionPrompt();
     }
 
@@ -50,6 +51,7 @@ public class Inspectable : MonoBehaviour, IInteractable
 
     private void CreateInteractionPrompt()
     {
+        if (interactPrompt != null) Destroy(interactPrompt);
         interactPrompt = Instantiate(UserInterfaceManager.Instance.UserInterfaceData.DefaultInteractUI);
         interactPrompt.transform.position = transform.position + new Vector3(0,HEIGHT_ABOVE_INTERACTABLE, 0);
         interactPrompt.GetComponent<InteractPrompt>().InteractionType = InteractionType.Question;

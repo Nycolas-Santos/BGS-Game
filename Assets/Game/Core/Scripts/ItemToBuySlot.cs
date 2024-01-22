@@ -30,11 +30,14 @@ namespace Game.Core.Scripts
                 {
                     GameManager.Instance.PlayerInstance.Inventory.RemoveCoin(item.price);
                     GameManager.Instance.PlayerInstance.Inventory.AddItem(item);
+                    SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiBuySound);
                     Debug.Log(PURCHASE_OK);
+                    
                 }
                 else
                 {
                     Debug.Log(PURCHASE_NOK_COIN);
+                    SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiNotEnoughCashStranger);
                 }
             }
             else

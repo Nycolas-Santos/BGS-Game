@@ -254,10 +254,12 @@ namespace Game.Core.Scripts
             {
                 equippedClothes = null;
                 _spriteSheetController.ChangeSpriteData(null,CLOTHES_SPRITE_LAYER_INDEX);
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiEquipItem);
             }
             else
             {
                 _spriteSheetController.ChangeSpriteData(clothes.SpriteData,CLOTHES_SPRITE_LAYER_INDEX);
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiEquipItem);
             }
             
         }
@@ -269,10 +271,12 @@ namespace Game.Core.Scripts
             {
                 equippedHead = null;
                 _spriteSheetController.ChangeSpriteData(null,HEAD_SPRITE_LAYER_INDEX);
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiEquipItem);
             }
             else
             {
                 _spriteSheetController.ChangeSpriteData(head.SpriteData,HEAD_SPRITE_LAYER_INDEX);
+                SoundManager.Instance.PlayUISound(SoundManager.Instance.audioSettings.uiEquipItem);
             }
             
         }

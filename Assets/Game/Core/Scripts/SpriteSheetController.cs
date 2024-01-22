@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Game.Core.Scripts;
 using UnityEngine;
 
 public class SpriteSheetController : MonoBehaviour
@@ -77,6 +78,7 @@ public class SpriteSheetController : MonoBehaviour
                 {
                     layer.SetSpriteLayerIndex(index);
                 }
+                SoundManager.Instance.PlayFootstepSound();
             }
             else
             {

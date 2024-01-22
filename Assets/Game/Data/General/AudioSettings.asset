@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d210ca25c009742b49417b3c4b8e88, type: 3}
+  m_Name: AudioSettings
+  m_EditorClassIdentifier: 
+  uiCloseSound: {fileID: 8300000, guid: 9b501b0ec6b115e4eab7ef177b5406e8, type: 3}
+  uiOpenSound: {fileID: 8300000, guid: 9b501b0ec6b115e4eab7ef177b5406e8, type: 3}
+  uiInspectSound: {fileID: 8300000, guid: 1dfe2fe936e9313408acfb3bcdca4737, type: 3}
+  uiSellSound: {fileID: 8300000, guid: 0bc883fee54dbf7488d432b83ca4acb3, type: 3}
+  uiBuySound: {fileID: 8300000, guid: ca6490a731982c245b3e2849f2b712a0, type: 3}
+  uiAddItem: {fileID: 8300000, guid: ba8ca47bbf247db4c8ffc7508713d4c8, type: 3}
+  uiEquipItem: {fileID: 8300000, guid: ba8ca47bbf247db4c8ffc7508713d4c8, type: 3}
+  uiOpenInventory: {fileID: 8300000, guid: 1dfe2fe936e9313408acfb3bcdca4737, type: 3}
+  uiCloseInventory: {fileID: 8300000, guid: 1dfe2fe936e9313408acfb3bcdca4737, type: 3}
+  uiUpdateCoinStat: {fileID: 8300000, guid: 52313062274a8fc4fbb0e0b7fede61ff, type: 3}
+  uiBeginDrag: {fileID: 8300000, guid: e22e297ff6c5b984eaa636dc01df5838, type: 3}
+  uiEndDrag: {fileID: 8300000, guid: e22e297ff6c5b984eaa636dc01df5838, type: 3}
+  uiNotEnoughCashStranger: {fileID: 8300000, guid: 174e7881181f63844878e1819d2de998, type: 3}
+  sfxFootstepSound: {fileID: 8300000, guid: a7df7288e8ef70546bc77632f34da0d6, type: 3}
+  sfxOpenShop: {fileID: 8300000, guid: 202ebc1b1ceeab54eb3b058748b6afeb, type: 3}
+  sfxCloseShop: {fileID: 8300000, guid: 74a067298bea0904d8b5025bc7c1470c, type: 3}
